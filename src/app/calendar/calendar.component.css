@@ -1,55 +1,59 @@
 .calendar-container {
-    padding: 10px;
-    max-width: 800px;
-    margin: auto;
-  }
-  
-  .calendar-table {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 1px;
-    border: 1px solid #ddd;
-  }
-  
-  .calendar-header {
-    display: contents;
-  }
-  
-  .calendar-header-cell {
-    background-color: #f0f0f0;
-    padding: 5px;
-    text-align: center;
-    font-weight: bold;
-  }
-  
-  .calendar-body {
-    display: contents;
-  }
-  
-  .calendar-cell {
-    background-color: #fff;
-    padding: 5px;
-    border: 1px solid #ddd;
-    min-height: 80px;
-    cursor: pointer;
-    position: relative;
-  }
-  
-  .calendar-cell-top {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .calendar-day-number {
-    font-size: 1em;
-    margin-bottom: 5px;
-  }
-  
-  .calendar-appointment {
-    background-color: #ad2121;
-    color: #fff;
-    padding: 2px 5px;
-    margin-top: 5px;
-    border-radius: 3px;
-  }
-  
+  padding: 10px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.calendar-table {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  border: 1px solid #ddd;
+}
+
+.calendar-header {
+  display: contents;
+}
+
+.calendar-header-cell {
+  background-color: #f0f0f0;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.calendar-body {
+  display: contents;
+}
+
+.calendar-cell {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  min-height: 150px; /* збільшено висоту */
+  cursor: pointer;
+  position: relative;
+}
+
+.calendar-cell-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.calendar-day-number {
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+
+.calendar-appointment {
+  background-color: #ad2121;
+  color: #fff;
+  padding: 2px 5px;
+  margin-top: 5px;
+  border-radius: 3px;
+}
+
+.today {
+  border: 2px solid #007bff;
+  background-color: #e7f3ff;
+}

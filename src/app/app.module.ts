@@ -11,19 +11,17 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
-//import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
 import { AppComponent } from './app.component';
-import { CalendarComponent } from './calendar/calendar.component';
-import { AppointmentDialogComponent } from './appointment-dialog/appointment-dialog.component';
 import { RouterModule } from '@angular/router';
-//import { CalendarModule } from './calendar-module/calendar-module.module';
+import { AppointmentDialogComponent } from './appointment-dialog/appointment-dialog.component';
+import { CalendarComponent } from './calendar/calendar.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     CalendarComponent,
-    AppointmentDialogComponent,
+    AppointmentDialogComponent
   ],
   imports: [
     BrowserModule,

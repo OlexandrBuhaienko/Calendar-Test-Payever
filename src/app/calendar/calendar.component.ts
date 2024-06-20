@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AppointmentDialogComponent } from '../appointment-dialog/appointment-dialog.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
 
 interface CalendarDay {
   date: Date;
@@ -21,10 +22,11 @@ interface Appointment {
 })
 export class CalendarComponent implements OnInit {
   daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  calendarDays: CalendarDay[] = [];
-  appointments: Appointment[] = [];
+  private appointmentsSubject = new BehaviorSubject<Appointment[]>([]);
+  appointments$ = this.appointmentsSubject.asObservable();
+  calendarDays$: Observable<CalendarDay[]> = new Observable<CalendarDay[]>();
 
-  constructor(public dialog: MatDialog, private fb: FormBuilder) {}
+  constructor(public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.generateCalendar();
@@ -36,37 +38,58 @@ export class CalendarComponent implements OnInit {
     const end = new Date(start);
     end.setMonth(start.getMonth() + 1);
     end.setDate(0);
-    
-    this.calendarDays = [];
-    for (let date = start; date <= end; date.setDate(date.getDate() + 1)) {
-      this.calendarDays.push({
-        date: new Date(date),
-        appointments: this.appointments.filter(app => app.date.toDateString() === date.toDateString())
-      });
-    }
+
+    this.calendarDays$ = this.appointments$.pipe(
+      map(appointments => {
+        const days: CalendarDay[] = [];
+        for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+          days.push({
+            date: new Date(date),
+            appointments: appointments.filter(app => app.date.toDateString() === date.toDateString())
+          });
+        }
+        return days;
+      })
+    );
   }
 
-  openDialog(): void {
+  openDialog(date?: Date): void {
     const dialogRef = this.dialog.open(AppointmentDialogComponent, {
       width: '250px',
-      data: {date: new Date()}
+      data: { date: date || new Date() }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.appointments.push({ title: result.title, date: result.date });
+        const currentAppointments = this.appointmentsSubject.value;
+        this.appointmentsSubject.next([...currentAppointments, { title: result.title, date: result.date }]);
         this.generateCalendar();
       }
     });
   }
 
-  deleteAppointment(date: Date): void {
-    this.appointments = this.appointments.filter(app => app.date.toDateString() !== date.toDateString());
+  deleteAppointments(date: Date): void {
+    const currentAppointments = this.appointmentsSubject.value.filter(app => app.date.toDateString() !== date.toDateString());
+    this.appointmentsSubject.next(currentAppointments);
     this.generateCalendar();
   }
 
-  drop(event: CdkDragDrop<Appointment[]>, date: Date): void {
-    moveItemInArray(this.calendarDays, event.previousIndex, event.currentIndex);
-    this.generateCalendar();
+  drop(event: CdkDragDrop<Appointment[]>): void {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      const droppedAppointment = event.container.data[event.currentIndex];
+      const newDateString = event.container.element.nativeElement.getAttribute('data-date');
+      if (newDateString) {
+        droppedAppointment.date = new Date(newDateString);
+      }
+      this.generateCalendar();
+    }
+  }
+
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return date.toDateString() === today.toDateString();
   }
 }
