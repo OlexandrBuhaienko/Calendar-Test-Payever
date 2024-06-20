@@ -16,13 +16,14 @@ import { AppComponent } from './app.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { AppointmentDialogComponent } from './appointment-dialog/appointment-dialog.component';
 import { RouterModule } from '@angular/router';
+//import { CalendarModule } from './calendar-module/calendar-module.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     CalendarComponent,
-    AppointmentDialogComponent
+    AppointmentDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,7 +38,7 @@ import { RouterModule } from '@angular/router';
     DragDropModule,
     ReactiveFormsModule,
     MatIconModule, 
-    RouterModule
+    RouterModule.forRoot([])
   ],
   providers: [],
   bootstrap: [AppComponent]
