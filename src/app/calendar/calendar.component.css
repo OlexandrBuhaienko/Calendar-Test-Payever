@@ -1,7 +1,22 @@
 .calendar-container {
   padding: 10px;
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1200px; /* Максимальна ширина календаря */
   margin: auto;
+}
+
+.calendar-header-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.calendar-header-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  flex-grow: 1;
 }
 
 .calendar-table {
@@ -9,7 +24,6 @@
   grid-template-columns: repeat(7, 1fr);
   gap: 1px;
   border: 1px solid #ddd;
-  transform: scale(0.9); /* зменшення масштабу таблиці */
 }
 
 .calendar-header {
@@ -18,7 +32,7 @@
 
 .calendar-header-cell {
   background-color: #f0f0f0;
-  padding: 5px;
+  padding: 10px;
   text-align: center;
   font-weight: bold;
 }
@@ -29,9 +43,9 @@
 
 .calendar-cell {
   background-color: #fff;
-  padding: 5px;
+  padding: 10px;
   border: 1px solid #ddd;
-  min-height: 80px; /* зменшено висоту */
+  min-width: 80px;
   cursor: pointer;
   position: relative;
 }

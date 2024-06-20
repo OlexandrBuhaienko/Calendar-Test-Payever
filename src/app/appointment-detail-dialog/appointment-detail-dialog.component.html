@@ -11,10 +11,18 @@
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>Time</mat-label>
+      <input matInput type="time" formControlName="time">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Notes</mat-label>
+      <textarea matInput formControlName="notes" placeholder="Notes"></textarea>
+    </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onDelete()">Delete</button>
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button (click)="onSave()">Save</button>
+  <button mat-icon-button (click)="onDelete()"><mat-icon>delete</mat-icon></button>
+  <button mat-icon-button (click)="onCancel()"><mat-icon>close</mat-icon></button>
+  <button mat-icon-button (click)="onSave()"><mat-icon>save</mat-icon></button>
 </div>

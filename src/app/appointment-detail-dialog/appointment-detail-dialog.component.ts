@@ -15,9 +15,16 @@ export class AppointmentDetailDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder
   ) {
+    const appointmentDate = new Date(data.appointment.date);
+    const hours = appointmentDate.getHours().toString().padStart(2, '0');
+    const minutes = appointmentDate.getMinutes().toString().padStart(2, '0');
+    const time = `${hours}:${minutes}`;
+
     this.form = this.fb.group({
       title: [data.appointment.title, Validators.required],
-      date: [data.appointment.date, Validators.required]
+      date: [appointmentDate, Validators.required],
+      time: [time, Validators.required],
+      notes: [data.appointment.notes || ''] // Додано поле для нотаток
     });
   }
 
@@ -27,9 +34,16 @@ export class AppointmentDetailDialogComponent {
 
   onSave(): void {
     if (this.form.valid) {
+      const date = new Date(this.form.get('date')?.value);
+      const time = this.form.get('time')?.value.split(':');
+      date.setHours(time[0], time[1]);
       this.dialogRef.close({
         action: 'update',
-        appointment: { title: this.form.get('title')?.value, date: this.form.get('date')?.value }
+        appointment: {
+          title: this.form.get('title')?.value,
+          date: date,
+          notes: this.form.get('notes')?.value // Додаємо нотатки до збереження
+        }
       });
     }
   }

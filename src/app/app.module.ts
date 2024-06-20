@@ -13,8 +13,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
-import { AppointmentDialogComponent } from './appointment-dialog/appointment-dialog.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { AppointmentDialogComponent } from './appointment-dialog/appointment-dialog.component';
 import { AppointmentDetailDialogComponent } from './appointment-detail-dialog/appointment-detail-dialog.component';
 
 

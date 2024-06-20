@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
 import { AppointmentDialogComponent } from '../appointment-dialog/appointment-dialog.component';
 import { AppointmentDetailDialogComponent } from '../appointment-detail-dialog/appointment-detail-dialog.component';
 
@@ -14,6 +14,7 @@ interface CalendarDay {
 interface Appointment {
   title: string;
   date: Date;
+  notes?: string;
 }
 
 @Component({
@@ -22,8 +23,11 @@ interface Appointment {
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
+  @Input() date: Date = new Date();
+  @Input() appointments: Appointment[] = [];
+  @Output() dateChange = new EventEmitter<Date>();
   daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  private appointmentsSubject = new BehaviorSubject<Appointment[]>([]);
+  private appointmentsSubject = new BehaviorSubject<Appointment[]>(this.appointments);
   appointments$ = this.appointmentsSubject.asObservable();
   calendarDays$: Observable<CalendarDay[]> = new Observable<CalendarDay[]>();
 
@@ -34,8 +38,7 @@ export class CalendarComponent implements OnInit {
   }
 
   generateCalendar(): void {
-    const start = new Date();
-    start.setDate(1);
+    const start = new Date(this.date.getFullYear(), this.date.getMonth(), 1);
     const end = new Date(start);
     end.setMonth(start.getMonth() + 1);
     end.setDate(0);
@@ -54,16 +57,16 @@ export class CalendarComponent implements OnInit {
     );
   }
 
-  openDialog(date?: Date): void {
+  openDialog(date: Date): void {
     const dialogRef = this.dialog.open(AppointmentDialogComponent, {
       width: '500px',
-      data: { date: date || new Date() }
+      data: { date }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const currentAppointments = this.appointmentsSubject.value;
-        this.appointmentsSubject.next([...currentAppointments, { title: result.title, date: result.date }]);
+        this.appointmentsSubject.next([...currentAppointments, { title: result.title, date: result.date, notes: result.notes }]);
         this.generateCalendar();
       }
     });
@@ -82,8 +85,8 @@ export class CalendarComponent implements OnInit {
         } else if (result.action === 'update') {
           const currentAppointments = this.appointmentsSubject.value.filter(app => app !== appointment);
           this.appointmentsSubject.next([...currentAppointments, result.appointment]);
-          this.generateCalendar();
         }
+        this.generateCalendar();
       }
     });
   }
@@ -94,16 +97,15 @@ export class CalendarComponent implements OnInit {
     this.generateCalendar();
   }
 
-  drop(event: CdkDragDrop<Appointment[]>): void {
+  drop(event: CdkDragDrop<Appointment[]>, day: CalendarDay): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
       const droppedAppointment = event.container.data[event.currentIndex];
-      const newDateString = event.container.element.nativeElement.getAttribute('data-date');
-      if (newDateString) {
-        droppedAppointment.date = new Date(newDateString);
-      }
+      const newDate = new Date(day.date);
+      newDate.setHours(droppedAppointment.date.getHours(), droppedAppointment.date.getMinutes());
+      droppedAppointment.date = newDate;
       this.generateCalendar();
     }
   }
@@ -111,5 +113,21 @@ export class CalendarComponent implements OnInit {
   isToday(date: Date): boolean {
     const today = new Date();
     return date.toDateString() === today.toDateString();
+  }
+
+  previousMonth(): void {
+    const newDate = new Date(this.date);
+    newDate.setMonth(newDate.getMonth() - 1);
+    this.date = newDate;
+    this.dateChange.emit(this.date);
+    this.generateCalendar();
+  }
+
+  nextMonth(): void {
+    const newDate = new Date(this.date);
+    newDate.setMonth(newDate.getMonth() + 1);
+    this.date = newDate;
+    this.dateChange.emit(this.date);
+    this.generateCalendar();
   }
 }
