@@ -1,0 +1,28 @@
+<mat-toolbar color="primary">
+    <span>My Calendar</span>
+</mat-toolbar>
+<div class="calendar-container">
+    <button mat-raised-button color="primary" (click)="openDialog()">Add Appointment</button>
+    <div class="calendar-table">
+        <div class="calendar-header">
+            <div *ngFor="let day of daysOfWeek" class="calendar-header-cell">{{ day }}</div>
+        </div>
+        <div class="calendar-body">
+            <div *ngFor="let day of calendarDays" class="calendar-cell">
+                <div class="calendar-cell-top">
+                    <span class="calendar-day-number">{{ day.date | date: 'd' }}</span>
+                    <button mat-icon-button (click)="deleteAppointment(day.date)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+                <div cdkDropList (cdkDropListDropped)="drop($event, day.date)">
+                    <div *ngFor="let appointment of day.appointments"
+                        cdkDrag
+                        class="calendar-appointment">
+                        {{ appointment.title }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
