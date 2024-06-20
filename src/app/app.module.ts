@@ -15,13 +15,15 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { AppointmentDialogComponent } from './appointment-dialog/appointment-dialog.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { AppointmentDetailDialogComponent } from './appointment-detail-dialog/appointment-detail-dialog.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     CalendarComponent,
-    AppointmentDialogComponent
+    AppointmentDialogComponent,
+    AppointmentDetailDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -2,7 +2,6 @@
     <span>My Calendar</span>
   </mat-toolbar>
   <div class="calendar-container">
-    <button mat-raised-button color="primary" (click)="openDialog()" (keyup.enter)="openDialog()">Add Appointment</button>
     <div class="calendar-table">
       <div class="calendar-header">
         <div *ngFor="let day of daysOfWeek" class="calendar-header-cell">{{ day }}</div>
@@ -14,18 +13,19 @@
              [cdkDropListData]="day.appointments" 
              (cdkDropListDropped)="drop($event)"
              [ngClass]="{'today': isToday(day.date)}"
+             [attr.data-date]="day.date.toISOString()"
              tabindex="0"
              (click)="openDialog(day.date)" 
              (keyup.enter)="openDialog(day.date)">
           <div class="calendar-cell-top">
             <span class="calendar-day-number">{{ day.date | date: 'd' }}</span>
-            <button mat-icon-button (click)="deleteAppointments(day.date); $event.stopPropagation()" (keyup.enter)="deleteAppointments(day.date); $event.stopPropagation()">
-              <mat-icon>delete</mat-icon>
-            </button>
           </div>
           <div *ngFor="let appointment of day.appointments" 
                cdkDrag 
-               class="calendar-appointment">
+               class="calendar-appointment" 
+               tabindex="0"
+               (click)="openDetailDialog(appointment)" 
+               (keyup.enter)="openDetailDialog(appointment)">
             {{ appointment.title }}
           </div>
         </div>

@@ -4,6 +4,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppointmentDialogComponent } from '../appointment-dialog/appointment-dialog.component';
+import { AppointmentDetailDialogComponent } from '../appointment-detail-dialog/appointment-detail-dialog.component';
 
 interface CalendarDay {
   date: Date;
@@ -55,7 +56,7 @@ export class CalendarComponent implements OnInit {
 
   openDialog(date?: Date): void {
     const dialogRef = this.dialog.open(AppointmentDialogComponent, {
-      width: '250px',
+      width: '500px',
       data: { date: date || new Date() }
     });
 
@@ -68,8 +69,27 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-  deleteAppointments(date: Date): void {
-    const currentAppointments = this.appointmentsSubject.value.filter(app => app.date.toDateString() !== date.toDateString());
+  openDetailDialog(appointment: Appointment): void {
+    const dialogRef = this.dialog.open(AppointmentDetailDialogComponent, {
+      width: '500px',
+      data: { appointment }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (result.action === 'delete') {
+          this.deleteAppointment(result.appointment);
+        } else if (result.action === 'update') {
+          const currentAppointments = this.appointmentsSubject.value.filter(app => app !== appointment);
+          this.appointmentsSubject.next([...currentAppointments, result.appointment]);
+          this.generateCalendar();
+        }
+      }
+    });
+  }
+
+  deleteAppointment(appointment: Appointment): void {
+    const currentAppointments = this.appointmentsSubject.value.filter(app => app !== appointment);
     this.appointmentsSubject.next(currentAppointments);
     this.generateCalendar();
   }

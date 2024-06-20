@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-appointment-dialog',
   templateUrl: './appointment-dialog.component.html',
-  styleUrls: ['./appointment-dialog.component.css']
+  styleUrls: ['./appointment-dialog.component.css'],
 })
 export class AppointmentDialogComponent {
   form: FormGroup;
@@ -27,7 +27,10 @@ export class AppointmentDialogComponent {
 
   onSave(): void {
     if (this.form.valid) {
-      this.dialogRef.close(this.form.value);
+      this.dialogRef.close({
+        title: this.form.get('title')?.value,
+        date: this.form.get('date')?.value
+      });
     }
   }
 }

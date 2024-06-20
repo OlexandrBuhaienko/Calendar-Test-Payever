@@ -1,0 +1,29 @@
+.dialog-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  .date-field input {
+    width: auto;
+  }
+  
+  .mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 400px; /* Збільшено мінімальну ширину */
+    max-width: 100%; /* Забезпечення адаптивності */
+  }
+  
+  .mat-dialog-actions {
+    display: flex;
+    justify-content: center;
+  }
+  

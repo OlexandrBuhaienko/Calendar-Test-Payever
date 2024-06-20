@@ -1,6 +1,6 @@
 .calendar-container {
   padding: 10px;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: auto;
 }
 
@@ -9,6 +9,7 @@
   grid-template-columns: repeat(7, 1fr);
   gap: 1px;
   border: 1px solid #ddd;
+  transform: scale(0.9); /* зменшення масштабу таблиці */
 }
 
 .calendar-header {
@@ -17,7 +18,7 @@
 
 .calendar-header-cell {
   background-color: #f0f0f0;
-  padding: 10px;
+  padding: 5px;
   text-align: center;
   font-weight: bold;
 }
@@ -28,9 +29,9 @@
 
 .calendar-cell {
   background-color: #fff;
-  padding: 10px;
+  padding: 5px;
   border: 1px solid #ddd;
-  min-height: 150px; /* збільшено висоту */
+  min-height: 80px; /* зменшено висоту */
   cursor: pointer;
   position: relative;
 }
