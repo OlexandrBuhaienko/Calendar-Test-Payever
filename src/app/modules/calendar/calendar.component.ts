@@ -3,8 +3,8 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { AppointmentDialogComponent } from '../appointment-dialog/appointment-dialog.component';
-import { AppointmentDetailDialogComponent } from '../appointment-detail-dialog/appointment-detail-dialog.component';
+import { AppointmentDialogComponent } from '../../appointment-dialog/appointment-dialog.component';
+import { AppointmentDetailDialogComponent } from '../../appointment-detail-dialog/appointment-detail-dialog.component';
 
 interface CalendarDay {
   date: Date;
@@ -22,7 +22,7 @@ interface Appointment {
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent implements OnInit {
+export class CalendarModuleComponent implements OnInit {
   @Input() date: Date = new Date();
   @Input() appointments: Appointment[] = [];
   @Output() dateChange = new EventEmitter<Date>();

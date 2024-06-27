@@ -1,0 +1,43 @@
+<div class="calendar-container">
+    <div class="calendar-header-nav">
+      <button mat-icon-button (click)="previousMonth()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <div class="calendar-header-title">
+        {{ date | date: 'MMMM yyyy' }}
+      </div>
+      <button mat-icon-button (click)="nextMonth()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+    <div class="calendar-table">
+      <div class="calendar-header">
+        <div *ngFor="let day of daysOfWeek" class="calendar-header-cell">{{ day }}</div>
+      </div>
+      <div class="calendar-body">
+        <div *ngFor="let day of (calendarDays$ | async)" 
+             class="calendar-cell" 
+             cdkDropList 
+             [cdkDropListData]="day.appointments" 
+             (cdkDropListDropped)="drop($event, day)"
+             [ngClass]="{'today': isToday(day.date)}"
+             [attr.data-date]="day.date.toISOString()"
+             tabindex="0"
+             (click)="day.appointments.length === 0 ? openDialog(day.date) : null" 
+             (keyup.enter)="day.appointments.length === 0 ? openDialog(day.date) : null">
+          <div class="calendar-cell-top">
+            <span class="calendar-day-number">{{ day.date | date: 'd' }}</span>
+          </div>
+          <div *ngFor="let appointment of day.appointments" 
+               cdkDrag 
+               class="calendar-appointment" 
+               tabindex="0"
+               (click)="openDetailDialog(appointment)" 
+               (keyup.enter)="openDetailDialog(appointment)">
+            {{ appointment.title }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

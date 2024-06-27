@@ -13,17 +13,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
-import { CalendarComponent } from './calendar/calendar.component';
 import { AppointmentDialogComponent } from './appointment-dialog/appointment-dialog.component';
 import { AppointmentDetailDialogComponent } from './appointment-detail-dialog/appointment-detail-dialog.component';
+import { CalendarModule } from './modules/calendar/calendar.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    CalendarComponent,
     AppointmentDialogComponent,
-    AppointmentDetailDialogComponent
+    AppointmentDetailDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,7 +37,8 @@ import { AppointmentDetailDialogComponent } from './appointment-detail-dialog/ap
     DragDropModule,
     ReactiveFormsModule,
     MatIconModule, 
-    RouterModule.forRoot([])
+    RouterModule.forRoot([]),
+    CalendarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
