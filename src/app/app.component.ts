@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
-interface Appointment {
-  title: string;
-  date: Date;
-  notes?: string;
-}
+// interface Appointment {
+//   title: string;
+//   date: Date;
+//   notes?: string;
+// }
 
 @Component({
   selector: 'app-root',

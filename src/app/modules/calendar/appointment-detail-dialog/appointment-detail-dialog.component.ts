@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './appointment-detail-dialog.component.html',
   styleUrls: ['./appointment-detail-dialog.component.css'],
 })
+
 export class AppointmentDetailDialogComponent {
   form: FormGroup;
 

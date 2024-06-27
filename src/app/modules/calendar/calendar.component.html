@@ -20,14 +20,14 @@
              cdkDropList 
              [cdkDropListData]="day.appointments" 
              (cdkDropListDropped)="drop($event, day)"
-             [ngClass]="{'today': isToday(day.date)}"
+             [ngClass]="{'today': day.date ? isToday(day.date) : false}"
              [attr.data-date]="day.date.toISOString()"
              tabindex="0"
-             (click)="day.appointments.length === 0 ? openDialog(day.date) : null" 
-             (keyup.enter)="day.appointments.length === 0 ? openDialog(day.date) : null">
-          <div class="calendar-cell-top">
-            <span class="calendar-day-number">{{ day.date | date: 'd' }}</span>
-          </div>
+             (click)="day.date && day.appointments.length === 0 ? openDialog(day.date) : null" 
+             (keyup.enter)="day.date && day.appointments.length === 0 ? openDialog(day.date) : null">
+             <div class="calendar-cell-top">
+              <span *ngIf="day.date" class="calendar-day-number">{{ day.date | date: 'd' }}</span>
+            </div>
           <div *ngFor="let appointment of day.appointments" 
                cdkDrag 
                class="calendar-appointment" 
@@ -41,3 +41,39 @@
     </div>
   </div>
   
+
+
+<ng-template #dialogTemplate>
+  <form [formGroup]="appointmentForm" (ngSubmit)="onFormSubmit()" class="dialog-form">
+    <h2 mat-dialog-title>{{ isEditMode ? 'Edit Appointment' : 'Add Appointment' }}</h2>
+    <mat-dialog-content>
+      <div class="form-row">
+        <mat-form-field class="form-field">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" required>
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="date" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="form-row">
+        <mat-form-field class="form-field">
+          <mat-label>Time</mat-label>
+          <input matInput type="time" formControlName="time" required>
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Notes</mat-label>
+          <textarea matInput formControlName="notes"></textarea>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button type="button" (click)="onCancel()">Cancel</button>
+      <button mat-button type="submit">{{ isEditMode ? 'Save' : 'Add' }}</button>
+      <button *ngIf="isEditMode" mat-button color="warn" (click)="onDelete()">Delete</button>
+    </mat-dialog-actions>
+  </form>
+</ng-template>

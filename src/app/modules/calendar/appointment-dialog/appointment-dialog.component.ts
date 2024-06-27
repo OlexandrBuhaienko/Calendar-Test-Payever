@@ -8,6 +8,8 @@ import { AppointmentDetailDialogComponent } from '../appointment-detail-dialog/a
   templateUrl: './appointment-dialog.component.html',
   styleUrls: ['./appointment-dialog.component.css'],
 })
+
+
 export class AppointmentDialogComponent {
   form: FormGroup;
   isExistingAppointment: boolean;
